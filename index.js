@@ -20,8 +20,8 @@ app.get('/', async (req, res) => {
   try {
     const assetId = req.query.id;
     if (!assetId) return res.status(400).send('Missing id');
-
-    const test = await fetch(`https://assetdelivery.roblox.com/v2/asset/?id=${assetId}`, {
+    //THIS USES A ROBLOX PROXY! PLEASE DO NOT USE YOUR MAIN ACCOUNT'S COOKIES!!!
+    const test = await fetch(`https://assetdelivery.roproxy.com/v2/asset/?id=${assetId}`, {
       headers: {
         Cookie: cookie
       }
