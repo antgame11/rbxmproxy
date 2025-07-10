@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 dotenv.config();
 const exe = util.promisify(exec);
 const app = express();
-const port = 2763;
+const port = 8080;
 const cookie = await process.env.cookie;
 
 function getrandom(min, max) {
