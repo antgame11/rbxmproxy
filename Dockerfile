@@ -10,4 +10,4 @@ COPY . .
 
 RUN chmod +x rbxmk init.sh
 
-CMD ["node", "index.js"]
+CMD sh -c "./init.sh && node index.js"
