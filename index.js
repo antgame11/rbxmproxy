@@ -10,12 +10,6 @@ const app = express();
 const port = 8080;
 const cookie = await process.env.cookie;
 
-function getrandom(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 app.get('/', async (req, res) => {
   try {
     const assetId = req.query.id;
@@ -37,15 +31,16 @@ app.get('/', async (req, res) => {
 
     const fileBuffer = Buffer.from(await location.arrayBuffer());
     res.setHeader("Content-Type", "application/octet-stream");
-
+    res.setHeader("Content-Disposition",`attachment; filename=${assetId}.rbxm`)
     if (fileBuffer.toString().startsWith("<roblox xml")) {
-      const randomname = `tmp/${getrandom(10000000000, 99999999999)}`;
-      await fs.writeFile(`${randomname}.rbxmx`, fileBuffer);
-      await exe(`echo "local ok = fs.read('${randomname}.rbxmx', 'rbxmx'); fs.write('${randomname}.rbxm', ok, 'rbxm')" | ./rbxmk run -`);
-      const converted = await fs.readFile(`${randomname}.rbxm`);
+      const locname = `tmp/${assetId}`;
+      await fs.writeFile(`${locname}.rbxmx`, fileBuffer);
+      
+      await exe(`./lune run convert ${locname}.rbxmx ${locname}.rbxm`);
+      const converted = await fs.readFile(`${locname}.rbxm`);
       res.send(converted);
-      await fs.rm(`${randomname}.rbxmx`);
-      await fs.rm(`${randomname}.rbxm`);
+      fs.rm(`${locname}.rbxmx`);
+      fs.rm(`${locname}.rbxm`);
     } else {
       res.send(fileBuffer);
     }

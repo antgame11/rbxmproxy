@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN chmod +x rbxmk init.sh
+RUN chmod +x lune init.sh
 
 CMD sh -c "./init.sh && node index.js"
